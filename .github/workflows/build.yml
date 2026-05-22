@@ -11,29 +11,36 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # 拉取仓库代码
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 安装 Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # 安装依赖
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install pyinstaller
           pip install pandas
           pip install openpyxl
 
-      - name: Build exe
+      # 打包 EXE
+      - name: Build EXE
         run: |
-          pyinstaller ^
-          --onefile ^
-          --windowed ^
-          --name 地址解析工具 ^
-          openpyxl.py
+          pyinstaller `
+            --onefile `
+            --console `
+            --clean `
+            --name 地址解析工具 `
+            openpyxl.py
 
-      - name: Upload artifact
+      # 上传 EXE
+      - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: 地址解析工具
